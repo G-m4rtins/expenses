@@ -30,11 +30,15 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 
-    public User Update(User user) {
-        if (!userRepositories.existsById(user.getId())) {
-            throw new IllegalArgumentException("User not found");
-        }
-        return userRepositories.save(user);
+    public User Update(Long id, User user) {
+
+        User existingUser = userRepositories.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        existingUser.setName(user.getName());
+        existingUser.setEmail(user.getEmail());
+
+        return userRepositories.save(existingUser);
     }
 
     public void Delete(Long id) {
