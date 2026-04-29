@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.controleFinanceiro.expenses.models.User;
-import com.controleFinanceiro.expenses.repositories.UserRepositories;
+import com.controleFinanceiro.expenses.repositories.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -12,40 +12,40 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepositories userRepositories;
+    private final UserRepository userRepository;
 
     public User Create(User user) {
-        if (userRepositories.existsByEmail(user.getEmail())) {
+        if (userRepository.existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
         }
-        return userRepositories.save(user);
+        return userRepository.save(user);
     }
 
     public List<User> findAll() {
-        return userRepositories.findAll();
+        return userRepository.findAll();
     }
 
     public User findById(Long id) {
-        return userRepositories.findById(id)
+        return userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 
     public User Update(Long id, User user) {
 
-        User existingUser = userRepositories.findById(id)
+        User existingUser = userRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         existingUser.setName(user.getName());
         existingUser.setEmail(user.getEmail());
 
-        return userRepositories.save(existingUser);
+        return userRepository.save(existingUser);
     }
 
     public void Delete(Long id) {
-        if (!userRepositories.existsById(id)) {
+        if (!userRepository.existsById(id)) {
             throw new IllegalArgumentException("User not found");
         }
-        userRepositories.deleteById(id);
+        userRepository.deleteById(id);
     }
 
 }

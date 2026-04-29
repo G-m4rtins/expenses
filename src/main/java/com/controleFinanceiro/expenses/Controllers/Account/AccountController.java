@@ -4,15 +4,16 @@ import com.controleFinanceiro.expenses.models.Account;
 import com.controleFinanceiro.expenses.models.User;
 import com.controleFinanceiro.expenses.services.Account.AccountService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/Account")
+@RequestMapping("/account")
 @RequiredArgsConstructor
-class AccountController {
+public class AccountController {
 
     private final AccountService accountService;
 
@@ -34,9 +35,9 @@ class AccountController {
     }
 
     @PostMapping
-    public ResponseEntity<Account> create(Account account) {
+    public ResponseEntity<Account> create(@RequestBody Account account) {
         Account createdAccount = accountService.create(account);
-        return ResponseEntity.ok(createdAccount);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdAccount);
     }
 
     @PutMapping("/{id}")

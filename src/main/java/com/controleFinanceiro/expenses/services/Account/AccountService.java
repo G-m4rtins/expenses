@@ -1,7 +1,7 @@
 package com.controleFinanceiro.expenses.services.Account;
 
 import com.controleFinanceiro.expenses.models.Account;
-import com.controleFinanceiro.expenses.repositories.AccountRepositories;
+import com.controleFinanceiro.expenses.repositories.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +12,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountService {
 
-    private final AccountRepositories accountRepositories;
+    private final AccountRepository accountRepository;
 
     public List<Account> findAll() {
-        return accountRepositories.findAll();
+        return accountRepository.findAll();
     }
 
     public Account create(Account account) {
-        return accountRepositories.save(account);
+        return accountRepository.save(account);
     }
 
     public Account update(Long id, Account account) {
@@ -28,12 +28,12 @@ public class AccountService {
         existing.setName(account.getName());
         existing.setBalance(account.getBalance());
 
-        return accountRepositories.save(existing);
+        return accountRepository.save(existing);
     }
 
     public void delete(Long id) {
         validateAccount(id);
-        accountRepositories.deleteById(id);
+        accountRepository.deleteById(id);
     }
 
     public BigDecimal getBalance(Long id) {
@@ -41,12 +41,12 @@ public class AccountService {
     }
 
     public Account findById(Long id) {
-        return accountRepositories.findById(id)
+        return accountRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
     }
 
     private void validateAccount(Long id) {
-        if (!accountRepositories.existsById(id)) {
+        if (!accountRepository.existsById(id)) {
             throw new IllegalArgumentException("Account not found");
         }
     }
